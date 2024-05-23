@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startButton = document.getElementById('start-game');
     let cardsChosen = [];
     let cardsChosenId = [];
-    let cardsWon = [];
+    let cardsWon = 0;
 
     const cardArray = [
         { name: 'card1', img: 'images/distracted.png' },
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function createBoard() {
         shuffle(cardArray);
         grid.innerHTML = '';
-        cardsWon = [];
+        cardsWon = 0;
 
         for (let i = 0; i < cardArray.length; i++) {
             const card = document.createElement('img');
@@ -53,15 +53,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function checkForMatch() {
         const cards = document.querySelectorAll('#game-board img');
-        const firstCardId = cardsChosenId[0];
-        const secondCardId = cardsChosenId[1];
+        const [firstCardId, secondCardId] = cardsChosenId;
 
         if (cardsChosen[0] === cardsChosen[1] && firstCardId !== secondCardId) {
-            cards[firstCardId].style.visibility = 'hidden';
-            cards[secondCardId].style.visibility = 'hidden';
+            cards[firstCardId].style.display = 'none';
+            cards[secondCardId].style.display = 'none';
             cards[firstCardId].removeEventListener('click', flipCard);
             cards[secondCardId].removeEventListener('click', flipCard);
-            cardsWon.push(cardsChosen);
+            cardsWon++;
         } else {
             cards[firstCardId].setAttribute('src', 'images/blank.png');
             cards[secondCardId].setAttribute('src', 'images/blank.png');
@@ -70,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cardsChosen = [];
         cardsChosenId = [];
 
-        if (cardsWon.length === cardArray.length / 2) {
+        if (cardsWon === cardArray.length / 2) {
             alert('Congratulations! You found them all!');
         }
     }
